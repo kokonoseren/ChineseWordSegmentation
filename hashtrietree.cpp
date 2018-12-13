@@ -81,7 +81,7 @@ void HashTrieTree::search_node(const string &word, int &weight, string &kind){
         itWord=curr->_words.find(*it_chs);//在当前节点所指向的字中找到
                                       //当前输入词语的迭代器所指向的string型的字符
         if(itWord==curr->_words.end()){//没找到
-            weight=INT_MAX;
+            weight=0;//更改为0
             kind.clear();
         }
         else if(itWord->second->_isWord){//在根节点上
