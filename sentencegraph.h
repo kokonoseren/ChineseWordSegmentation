@@ -5,6 +5,8 @@
 #include <iostream>
 using namespace std;
 
+class HashTrieTree;
+
 //采用邻接表来储存有向无环图DAG
 typedef struct arc_node{//弧节点储存词语的信息，
     int _adj_vex;
@@ -22,9 +24,8 @@ class SentenceGraph//以有向无环图DAG的结构来存储
 {
 public:
     SentenceGraph();//建立一个空图
-    SentenceGraph(string Sentence);//根据一个
+    SentenceGraph(const string &Sentence, HashTrieTree *T);//根据一个
     ~SentenceGraph();//销毁一个图
-    void insert_arc();//增添环
 private:
     vector<VexNode> _vex;//储存图的顶点,寻找每个
     int _vex_num;//整个句子中的顶点数
