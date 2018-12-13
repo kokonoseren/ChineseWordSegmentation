@@ -16,7 +16,7 @@ typedef struct arc_node{//弧节点储存词语的信息，
 }ArcNode;
 
 typedef struct {
-    string ch;//每个字符
+    int pos;//pos的范围0~n
     ArcNode *first_arc;
 }VexNode;
 
