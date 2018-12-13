@@ -1,5 +1,7 @@
 #include "wordsegmentation.h"
-#include "hashtrietree.h"
+//#include "hashtrietree.h"
+#include "dictionary.h"
+#include "sentencegraph.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -9,16 +11,12 @@ int main(int argc, char *argv[])
     WordSegmentation w;
     w.show();
     */
-    HashTrieTree HTT;
-    string a="我",b="是",c="你",d="爸爸";
-    HTT.insert_node(a,1,"wo");
-    HTT.insert_node(b,2,"shi");
-    HTT.insert_node(c,3,"ni");
-    HTT.insert_node(d,4,"baba");
-    int weight;
-    string kind;
-    HTT.search_node("爸爸",weight,kind);
-    cout<<weight<<" "<<kind<<endl;
     //return a.exec();
+    Dictionary dict;
+    dict.load();
+    string a("我的梦想是成为你爸爸");
+    SentenceGraph g(a,dict.get_dict());
     return 0;
 }
+
+//dict一共有109750个词条
