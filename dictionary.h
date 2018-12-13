@@ -14,6 +14,7 @@ public:
     Dictionary();
     ~Dictionary();
     int load();
+    HashTrieTree *get_dict();
 private:
     HashTrieTree *_dict;
 };
