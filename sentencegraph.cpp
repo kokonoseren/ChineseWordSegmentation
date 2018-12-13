@@ -17,7 +17,7 @@ SentenceGraph::SentenceGraph(const string &Sentence,HashTrieTree *T){
     vector<string> chs;
     HashTrieTree::word_to_chs(Sentence,chs);//将一个句子转化为一个一个字
     this->_arc_num=0;
-    this->_vex_num=chs.size();
+    this->_vex_num=chs.size()+1;
 /*
  * 这里放弃使用迭代器进行访问，而采用数组下标来访问string和vector主要是因为
  * node->first_arc->adj_vex的类型是 int 型，直接使用数组下标来访问比较方便
@@ -57,32 +57,36 @@ SentenceGraph::SentenceGraph(const string &Sentence,HashTrieTree *T){
 
         VexNode *node=new VexNode;//要插入的顶点节点
 
-        node->ch=chs[i];//初始化顶点节点的字，不更改它的弧信息
-        node->first_arc=NULL;
+        node->pos=i;//初始化顶点节点的字，不更改它的弧信息,pos=1表示这个节点在第一个字之前
+        ArcNode *newNode1=new ArcNode;
+        newNode1->_adj_vex=i+1;
+        newNode1->_weight=0;
+        newNode1->_next_arc=NULL;
+        node->first_arc=newNode1;
         //接下来寻找它的弧
         for(unsigned int j=i;j<chs.size();j++){//对于chs里的每一个字，寻找它能和后续的字构成的可能词语
             possible_word+=chs[j];
-            int weight=INT_MAX;
+            int weight=0;
             string kind;
             T->search_node(possible_word,weight,kind);
 
-            if(weight<INT_MAX && node->first_arc==NULL){//如果构成词语，则更改它的弧信息
+            if(weight && j==i){//如果构成词语，则更改它的弧信息
                 ArcNode *newNode=new ArcNode;
                 newNode->kind=kind;
-                newNode->_adj_vex=j;
+                newNode->_adj_vex=j+1;
                 newNode->_weight=weight;
                 newNode->_next_arc=NULL;
                 node->first_arc=newNode;
                 this->_arc_num++;
             }
-            else if(weight<INT_MAX && node->first_arc!=NULL){//如果构成词语，并且已经有第一条弧
+            else if(weight && j!=i){
                 ArcNode *temp=node->first_arc;
                 while(temp->_next_arc!=NULL){
                     temp=temp->_next_arc;
                 }
                 ArcNode *newNode=new ArcNode;
                 newNode->kind=kind;
-                newNode->_adj_vex=j;
+                newNode->_adj_vex=j+1;
                 newNode->_weight=weight;
                 newNode->_next_arc=NULL;
                 temp->_next_arc=newNode;
@@ -97,4 +101,12 @@ SentenceGraph::SentenceGraph(const string &Sentence,HashTrieTree *T){
         node=NULL;
         possible_word.clear();
     }
+    VexNode *node=new VexNode;//要插入的顶点节点
+
+    node->pos=chs.size()+1;//初始化顶点节点的字，不更改它的弧信息,pos=1表示这个节点在第一个字之前
+    node->first_arc=NULL;
+    this->_vex.push_back(*node);
+    delete node;
+    node=NULL;
 }
+
