@@ -30,3 +30,7 @@ int Dictionary::load(){
     }
     return count;
 }
+
+HashTrieTree * Dictionary::get_dict(){
+    return this->_dict;
+}
