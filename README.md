@@ -14,5 +14,6 @@ todo:
 1. 保存词典dict 
 https://segmentfault.com/a/1190000008877595    trie树的基本概念原理和实现
 暂定第一版本使用hash tree来实现
+https://www.cnblogs.com/chinxi/p/6130791.html    有参考
 2. 查找并建立有向无环图
 3. 最短路径
