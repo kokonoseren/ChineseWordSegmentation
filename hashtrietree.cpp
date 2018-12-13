@@ -4,7 +4,6 @@
 HashTrieTree::HashTrieTree()
 {
     this->_root=new TrieNode;
-    this->_root->_num=0;
 }
 
 HashTrieTree::~HashTrieTree()
@@ -83,9 +82,9 @@ void HashTrieTree::search_node(const string &word, int &weight, string &kind){
                                       //当前输入词语的迭代器所指向的string型的字符
         if(itWord==curr->_words.end()){//没找到
             weight=INT_MAX;
-            kind=' ';
+            kind.clear();
         }
-        else if(itWord->second->_isWord){//是词语
+        else if(itWord->second->_isWord){//在根节点上
             weight=itWord->second->_isWord;
             kind=itWord->second->_kind;
             curr=itWord->second;//保证如果这个词语的前缀也是词语，那么还可以继续往后走，更新curr
