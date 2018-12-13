@@ -85,9 +85,10 @@ void HashTrieTree::search_node(const string &word, int &weight, string &kind){
             weight=INT_MAX;
             kind=' ';
         }
-        else if(itWord->second->_isWord){//在根节点上
+        else if(itWord->second->_isWord){//是词语
             weight=itWord->second->_isWord;
             kind=itWord->second->_kind;
+            curr=itWord->second;//保证如果这个词语的前缀也是词语，那么还可以继续往后走，更新curr
         }
         else {
             curr=itWord->second;
