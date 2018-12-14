@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <stack>
 using namespace std;
 
 class HashTrieTree;
@@ -11,8 +12,9 @@ class HashTrieTree;
 typedef struct arc_node{//弧节点储存词语的信息，
     int _adj_vex;
     struct arc_node *_next_arc;
-    int _weight;
-    string kind;
+    string _word;
+    double _weight;
+    string _kind;
 }ArcNode;
 
 typedef struct {
@@ -26,6 +28,8 @@ public:
     SentenceGraph();//建立一个空图
     SentenceGraph(const string &Sentence, HashTrieTree *T);//根据一个
     ~SentenceGraph();//销毁一个图
+
+    void shortest_cut(stack<int> &path);
 private:
     vector<VexNode> _vex;//储存图的顶点,寻找每个
     int _vex_num;//整个句子中的顶点数
