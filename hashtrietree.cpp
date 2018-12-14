@@ -10,8 +10,9 @@ HashTrieTree::~HashTrieTree()
 {
     delete _root;
 }
+//UTF-8编码的字符切分
 
-void HashTrieTree::word_to_chs(const string & word, vector<string> & chs)
+void HashTrieTree::word_to_chs_UTF8(const string & word, vector<string> & chs)
 {
       int wordLen=word.size();
       int i=0;
@@ -33,10 +34,23 @@ void HashTrieTree::word_to_chs(const string & word, vector<string> & chs)
      }
  }
 
-void HashTrieTree::insert_node(const string & word, const int &weight, const string &kind){
+
+//GBK的切分
+
+void HashTrieTree::word_to_chs_GBK(const string & word, vector<string> & chs){
+    int i=0;
+    while(i<word.size()){
+        string subWord=word.substr(i, 2);
+        chs.push_back(subWord);
+        i+=2;
+    }
+}
+
+
+void HashTrieTree::insert_node(const string & word, const double &weight, const string &kind){
     //对要插入的词进行处理
     vector<string> chs;
-    word_to_chs(word,chs);//把中文词语变为单个字
+    word_to_chs_GBK(word,chs);//把中文词语变为单个字
 
     vector<string>::iterator it_chs;//词语迭代器
     it_chs=chs.begin();
@@ -67,10 +81,10 @@ void HashTrieTree::insert_node(const string & word, const int &weight, const str
     }
 }
 
-void HashTrieTree::search_node(const string &word, int &weight, string &kind){
+void HashTrieTree::search_node(const string &word, double &weight, string &kind){
     //对要查找的词进行处理
     vector<string> chs;
-    word_to_chs(word,chs);//把中文词语变为单个字
+    word_to_chs_GBK(word,chs);//把中文词语变为单个字
 
     vector<string>::iterator it_chs;
     it_chs=chs.begin();
