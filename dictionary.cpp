@@ -2,6 +2,7 @@
 #include "hashtrietree.h"
 #include <iostream>
 #include <fstream>
+#include <cmath>
 using namespace std;
 
 Dictionary::Dictionary()
@@ -16,12 +17,15 @@ Dictionary::~Dictionary()
 
 int Dictionary::load(){
     string word;
-    int weight;
+    double weight;
     string kind;
     int count=0;
     ifstream fin("dict.txt");
     while(fin){
         fin>>word>>weight>>kind;
+        if(word.size()==2){
+            weight=log(weight);
+        }
         if(weight){
             _dict->insert_node(word,weight,kind);
             count++;
