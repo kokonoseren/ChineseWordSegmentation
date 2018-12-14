@@ -1,7 +1,8 @@
 #include "sentencegraph.h"
 #include "hashtrietree.h"
 #include <malloc.h>
-
+#include <queue>
+using namespace std;
 SentenceGraph::SentenceGraph()
 {
     this->_vex_num=0;
@@ -15,7 +16,7 @@ SentenceGraph::~SentenceGraph()
 
 SentenceGraph::SentenceGraph(const string &Sentence,HashTrieTree *T){
     vector<string> chs;
-    HashTrieTree::word_to_chs(Sentence,chs);//将一个句子转化为一个一个字
+    HashTrieTree::word_to_chs_GBK(Sentence,chs);//将一个句子转化为一个一个字
     this->_arc_num=0;
     this->_vex_num=chs.size()+1;
 /*
@@ -66,16 +67,17 @@ SentenceGraph::SentenceGraph(const string &Sentence,HashTrieTree *T){
         //接下来寻找它的弧
         for(unsigned int j=i;j<chs.size();j++){//对于chs里的每一个字，寻找它能和后续的字构成的可能词语
             possible_word+=chs[j];
-            int weight=0;
+            double weight=0;
             string kind;
             T->search_node(possible_word,weight,kind);
 
             if(weight && j==i){//如果构成词语，则更改它的弧信息
                 ArcNode *newNode=new ArcNode;
-                newNode->kind=kind;
+                newNode->_kind=kind;
                 newNode->_adj_vex=j+1;
                 newNode->_weight=weight;
                 newNode->_next_arc=NULL;
+                newNode->_word=possible_word;
                 node->first_arc=newNode;
                 this->_arc_num++;
             }
@@ -85,10 +87,11 @@ SentenceGraph::SentenceGraph(const string &Sentence,HashTrieTree *T){
                     temp=temp->_next_arc;
                 }
                 ArcNode *newNode=new ArcNode;
-                newNode->kind=kind;
+                newNode->_kind=kind;
                 newNode->_adj_vex=j+1;
                 newNode->_weight=weight;
                 newNode->_next_arc=NULL;
+                newNode->_word=possible_word;
                 temp->_next_arc=newNode;
                 this->_arc_num++;
             }
@@ -110,3 +113,40 @@ SentenceGraph::SentenceGraph(const string &Sentence,HashTrieTree *T){
     node=NULL;
 }
 
+void SentenceGraph::shortest_cut(stack<int> &path){
+    //todo如何保存路径？直接实现n-最短路径？
+    queue<int> vex_nodes;
+    int pre_record[this->_vex_num]={0};
+    int dist[this->_vex_num]={0};//最大概率路径数组
+    //bool path[this->_vex_num][this->_vex_num];
+    ArcNode *p=new ArcNode;
+    p=this->_vex[0].first_arc;
+    while(p){
+        dist[p->_adj_vex]=p->_weight;
+        //dist[p->_adj_vex]=1;
+        vex_nodes.push(p->_adj_vex);
+        p=p->_next_arc;
+    }
+    while(!vex_nodes.empty()){
+        int pre_vex=vex_nodes.front();
+        vex_nodes.pop();
+        if(pre_vex==this->_vex_num-1)//最后一个节点的first_arc是
+            continue;
+        p=this->_vex[pre_vex].first_arc;
+        while(p){
+            if(dist[p->_adj_vex] < (dist[pre_vex] + p->_weight)){
+                dist[p->_adj_vex] = dist[pre_vex] + p->_weight;
+                pre_record[p->_adj_vex]=pre_vex;
+                vex_nodes.push(p->_adj_vex);
+            }
+            p=p->_next_arc;
+        }
+    }
+    int k=1;
+    int m=this->_vex_num-1;
+    while(k){
+        k=pre_record[m];
+        if(k)path.push(k);
+        m=k;
+    }
+}
