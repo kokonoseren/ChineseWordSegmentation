@@ -23,13 +23,14 @@ int Dictionary::load(){
     ifstream fin("dict.txt");
     while(fin){
         fin>>word>>weight>>kind;
-        if(word.size()==2){
-            weight=log(weight);
-        }
+
+        //weight=log(weight);
+
         if(weight){
             _dict->insert_node(word,weight,kind);
             count++;
         }
+
         weight=0;
     }
     return count;
