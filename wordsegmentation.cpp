@@ -1,47 +1,7 @@
-#include "wordsegmentation.h"
-#include "ui_wordsegmentation.h"
-#include "hashtrietree.h"
-#include <stack>
-
-using namespace std;
-
-/*
-WordSegmentation::WordSegmentation(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::WordSegmentation)
-{
-    ui->setupUi(this);
-}
-
-WordSegmentation::~WordSegmentation()
-{
-    delete ui;
-}
-*/
-WordSegmentation::WordSegmentation(){
-    this->_dict=new Dictionary;
-    this->_dict->load();
-}
-
-WordSegmentation::~WordSegmentation(){
-    delete _dict;
-}
-
 void WordSegmentation::show(){
     string sentence;
     cout<<"请输入待划分语句:"<<endl;
     cin>>sentence;
-
-    double weight;
-    string kind;
-    /*
-    this->_dict->get_dict()->search_node("应",weight,kind);
-    cout<<"应"<<weight<<kind;
-    this->_dict->get_dict()->search_node("该",weight,kind);
-    cout<<"该"<<weight<<kind;
-    this->_dict->get_dict()->search_node("应该",weight,kind);
-    cout<<"应该"<<weight<<kind;
-    */
 
     vector<string> chs;
     HashTrieTree::word_to_chs_GBK(sentence,chs);//将一个句子转化为一个一个字
@@ -62,3 +22,4 @@ void WordSegmentation::show(){
     }
     cout<<sen_aft_cut<<endl;
 }
+
