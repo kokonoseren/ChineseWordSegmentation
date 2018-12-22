@@ -71,12 +71,19 @@ void HashTrieTree::insert_node(const string & word, const double &weight, const 
             }
 
             temp.second=node;
-            curr->_words.insert(temp);//插入到子节点的map中去
+            curr->_words.insert(temp);//插入到map中去
 
             curr=node;//从子节点开始继续新建
         }
         else{
             curr=itWord->second;//如果找到了那么就继续往下走
+            //一种被我忽略的情况 如果以单个字为前缀的词语已经被记录，那么这个单个字就已经
+            //能找到了，但是这种情况仍然需要赋值
+            //那么当it_chs==chs.end()-1时候，需要给他赋值
+            if(it_chs==chs.end()-1){//如果要插入的是这个词的最后一个字
+                curr->_isWord=weight;
+                curr->_kind=kind;
+            }
         }
     }
 }
@@ -95,8 +102,9 @@ void HashTrieTree::search_node(const string &word, double &weight, string &kind)
         itWord=curr->_words.find(*it_chs);//在当前节点所指向的字中找到
                                       //当前输入词语的迭代器所指向的string型的字符
         if(itWord==curr->_words.end()){//没找到
-            weight=0;//更改为0
+            weight=INT_MAX;//更改
             kind.clear();
+            break;
         }
         else if(itWord->second->_isWord){//在根节点上
             weight=itWord->second->_isWord;
