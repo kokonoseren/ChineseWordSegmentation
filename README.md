@@ -1,4 +1,5 @@
 # ChineseWordSegmentation
+
 for 2018-2019 fall assignment 2 --Chinese word segmentation
 
 以最简单的方式来考虑，采用最短路径的求解算法：
@@ -20,3 +21,4 @@ https://www.cnblogs.com/chinxi/p/6130791.html    有参考
 
 2018/12/15 done
 已完成最初版本的分词功能
+
